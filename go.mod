@@ -11,6 +11,7 @@ require (
 	github.com/nats-io/nats.go v1.9.2
 	github.com/nats-io/stan.go v0.6.0
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
+	github.com/prometheus/client_golang v1.0.0
 	github.com/sirupsen/logrus v1.5.0
 	github.com/thanhpk/randstr v1.0.4
 	go.etcd.io/etcd v3.3.20+incompatible
