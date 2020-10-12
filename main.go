@@ -12,6 +12,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/juju/ratelimit"
 	"github.com/nats-io/nats.go"
 	"github.com/nats-io/stan.go"
@@ -122,7 +123,7 @@ func main() {
 	for id := 0; id < *np; id++ {
 		go func(id int) {
 			defer wpd.Done()
-			runPublisher(stopCh, r, *s, *cid, id, ch, *mpa, *mps, *ms, *d, &wpr)
+			runPublisher(stopCh, r, *s, *cid, ch, *mpa, *mps, *ms, *d, &wpr)
 		}(id)
 	}
 	rc := r.Run()
@@ -131,8 +132,8 @@ func main() {
 	fmt.Println(<-rc)
 }
 
-func runPublisher(stopCh chan os.Signal, r report.Report, s, cid string, id int, channel string, mpa, mps, ms int, duration time.Duration, wpr *sync.WaitGroup) int {
-	i := fmt.Sprintf("nss-bench-%d", id)
+func runPublisher(stopCh chan os.Signal, r report.Report, s, cid string, channel string, mpa, mps, ms int, duration time.Duration, wpr *sync.WaitGroup) int {
+	i := fmt.Sprintf("nss-bench-%s", uuid.New().String())
 	l := log.WithField("id", i)
 
 	n, err := nats.Connect(s, nats.PingInterval(2*time.Second), nats.Name(cid), nats.MaxReconnects(-1), nats.ReconnectWait(0), nats.ReconnectBufSize(-1), nats.DisconnectErrHandler(func(c *nats.Conn, err error) {
